@@ -9,10 +9,10 @@ RUN mv $PHANTOM_JS /usr/local/share
 RUN ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin 
 
 
+# Install Dependencies for T-Bot
+RUN pip3 install python-telegram-bot lxml cssselect requests selenium
+
 ADD . /project
 WORKDIR /project
-
-# Innstall Dependencies for T-Bot
-RUN pip3 install -r requirements.txt 
 
 CMD ["python3", "wilson.py"]
