@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3
 
 # Install PhantomJS
 ENV PHANTOM_JS "phantomjs-2.1.1-linux-x86_64"
