@@ -1,0 +1,38 @@
+pipeline:
+    build:
+      image: docker:latest
+      environment:
+          - DOCKER_HOST=unix:///tmp/host.sock
+          - DHUB_LOGIN=${DHUB_LOGIN}
+          - DHUB_PW=${DHUB_PW}
+          #- DOCKER_AUTH=${DOCKER_AUTH}
+      volumes:
+          - /var/run/docker.sock:/tmp/host.sock:rw
+      privileged: true
+      commands:
+          - docker build -t pingu/wilson:latest .
+      when:
+          branch: [ master ]
+
+    publish:
+      image: plugins/docker
+      username: ${DHUB_LOGIN}
+      password: ${DHUB_PW}
+      repo: pingu/wilson
+      tags: latest
+      when:
+        status: [ success ]
+                
+    noti2fy:
+      image: plugins/slack
+      webhook: ${SLACK_WEBHOOK}    
+      channel: drone
+      username: drone-ci
+      template: |
+        *{{ repo.name }}* #{{ build.number }} by *{{ build.author }}* finished with a *{{ uppercase build.status }}* in {{ since build.created }}
+        *Commit*: _{{ build.commit }}_
+        *Branch*:  _{{ build.branch }}_
+        {{ build.link }} 
+      when:
+        event: [ push, tag, deployment, pull_request ]
+        status: [ success, failure ]

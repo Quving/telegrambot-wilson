@@ -1,0 +1,6 @@
+cssselect==0.9.1
+future==0.15.2
+lxml==3.6.0
+python-telegram-bot==4.1.2
+requests==2.10.0
+selenium==2.53.2
