@@ -12,4 +12,5 @@ This Telegrambot creates a client with the famous chatter bot [cleverbot](http:/
 ``` docker build -t telegrambot-wilson .```
 
 ### Launch:
+Once you have had the conversation with [botfather](https://telegram.me/BotFather) and received your own bot-token, you can host your bot instance by yourself with the folling command:
 ``` docker run -d -e BOT_TOKEN=$(BOT_TOKEN) --name  telegrambot-wilson telegrambot-wilson```
