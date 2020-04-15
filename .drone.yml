@@ -30,4 +30,4 @@ steps:
       from_secret: rancher_context
   when:
     status: [ success ]
-    branch: [ develop ]
+    branch: [ master ]
