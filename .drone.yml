@@ -1,11 +1,33 @@
-pipeline:
-  publish:
-    image: plugins/docker
-    privileged: true
-    repo: pingu/wilson
-    tags: latest
-    secrets: [ docker_username, docker_password ]
-    when:
-      status: [ success ]
-      branch: [ master ]
+---
+kind: pipeline
+type: docker
+name: server
+steps:
+- name: publish image
+  image: plugins/docker
+  settings:
+    repo:
+      from_secret: docker_repository
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
+  when:
+    status: [ success ]
+    branch: [ master, develop ]
 
+- name: deploy instance
+  image: quving/drone-rancher-cicd:latest
+  settings:
+    stamp: ${DRONE_COMMIT}
+    kubernetes_deployment: telegrambot-wilson
+    kubernetes_namespace: apps
+    rancher_url:
+      from_secret: rancher_url
+    rancher_token:
+      from_secret: rancher_token
+    rancher_context:
+      from_secret: rancher_context
+  when:
+    status: [ success ]
+    branch: [ develop ]
