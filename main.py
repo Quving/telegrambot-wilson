@@ -3,7 +3,7 @@
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
-from chatbot import Chatbot
+from chatbotinstance import ChatbotInstance
 from config import Config
 
 updater = Updater(token=Config.BOT_TOKEN)
@@ -25,28 +25,28 @@ def start(bot, update):
 def reset_chatbot_instance(bot, update):
     if str(update.message.chat_id) in sessions.keys():
         bot.sendMessage(update.message.chat_id, "(Wilson dieded)")
-        sessions[str(update.message.chat_id)].resetChatbot()
+        sessions[str(update.message.chat_id)].reset()
         bot.sendMessage(update.message.chat_id, "(Wilson respawned")
         bot.sendMessage(update.message.chat_id, "... warum?")
 
 
 def kill_chatbot_instance(bot, update):
-    sessions[str(update.message.chat_id)].killChatbot()
+    sessions[str(update.message.chat_id)].kill()
     sessions.pop(str(update.message.chat_id))
     bot.sendMessage(update.message.chat_id, GOODBYE)
 
 
 def start_chatbot(bot, update):
-    newUser = {str(update.message.chat_id): Chatbot()}
+    newUser = {str(update.message.chat_id): ChatbotInstance()}
     sessions.update(newUser)
     bot.sendMessage(update.message.chat_id, GREETING)
 
 
 def chat(bot, update):
     if (str(update.message.chat_id) in sessions.keys() and
-            sessions[str(update.message.chat_id)].isOn()):
+            sessions[str(update.message.chat_id)].is_ready()):
         reply = sessions[
-            str(update.message.chat_id)].talk(update.message.text)
+            str(update.message.chat_id)].chat(update.message.text)
         bot.sendMessage(update.message.chat_id, reply)
 
 
