@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import random
+import time
 
+from telegram import ChatAction
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from chatbotinstance import ChatbotInstance
@@ -33,10 +36,12 @@ def start_chatbot(update, context):
 
 
 def chat(update, context):
-    if (str(update.message.chat_id) in sessions.keys() and
-            sessions[str(update.message.chat_id)].is_ready()):
-        reply = sessions[
-            str(update.message.chat_id)].chat(update.message.text)
+    chat_id = str(update.message.chat_id)
+    chatsession = sessions.get(chat_id, None)
+    if chatsession and chatsession.is_ready():
+        reply = sessions[chat_id].chat(update.message.text)
+        context.bot.send_chat_action(chat_id=chat_id, action=ChatAction.TYPING)
+        time.sleep(random.randint(0, 3))
         update.message.reply_text(reply)
 
 
