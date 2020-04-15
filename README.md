@@ -1,5 +1,5 @@
 # Telegram-Wilson
-[![Build Status](https://drone.quving.com/api/badges/Quving/telegram-wilson/status.svg)](https://drone.quving.com/Quving/telegram-wilson)
+[![Build Status](https://drone.quving.com/api/badges/Quving/telegrambot-wilson/status.svg)](https://drone.quving.com/Quving/telegrambot-wilson)
 
 ## Description
 Telegram-Wilson is a [telegrambot](https://core.telegram.org/bots/api), with which you can chat in a natural way. This chatbot is powered by [cleverbot](https://www.cleverbot.com/), a well-known chatbot that learns to imitate human conversations by communicating with people.
@@ -17,8 +17,8 @@ After you had the conversation with Botfather, you received a bot_token. This bo
 ### Docker (recommended)
 #### Build and use your own Docker-Image
 ```bash
-docker build -t telegram-wilson .
-docker run -d -e BOT_TOKEN=$(BOT_TOKEN) --name telegram-wilson telegrambot-wilson
+docker build -t telegrambot-wilson .
+docker run -d -e BOT_TOKEN=$(BOT_TOKEN) --name telegrambot-wilson telegrambot-wilson
 ```
 
 ## Usage
