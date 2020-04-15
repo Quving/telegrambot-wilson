@@ -57,6 +57,6 @@ class ChatbotInstance():
             we = self.driver.find_element_by_css_selector("input.stimulus")
             we.send_keys(msg)
             we.send_keys(Keys.RETURN)
-            time.sleep(3)
+            time.sleep(3)  # Necessary to let Cleverbot process.
             we = self.driver.find_elements_by_css_selector("span.bot")
             return we[-1].text
