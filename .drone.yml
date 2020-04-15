@@ -14,7 +14,7 @@ steps:
       from_secret: docker_password
   when:
     status: [ success ]
-    branch: [ master, develop ]
+    branch: [ master ]
 
 - name: deploy instance
   image: quving/drone-rancher-cicd:latest
