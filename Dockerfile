@@ -3,6 +3,7 @@ FROM python:3.6
 LABEL maintainer="vinh-ngu@hotmail.com"
 
 ENV PHANTOM_JS "phantomjs-2.1.1-linux-x86_64"
+ENV OPENSSL_CONF "/etc/ssl/"
 
 # Install PhantomJS
 RUN wget "https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2"
