@@ -26,9 +26,10 @@ def kill_chatbot_instance(update, context):
 
 
 def start_chatbot(update, context):
-    newUser = {str(update.message.chat_id): ChatbotInstance()}
-    sessions.update(newUser)
+    new_user = {str(update.message.chat_id): ChatbotInstance()}
+    sessions.update(new_user)
     update.message.reply_text(GREETING)
+    Config.logger.info("New user ({}) start interacting with the bot.".format(update.message.chat_id))
 
 
 def chat(update, context):
@@ -49,7 +50,6 @@ def error(update, context):
 
 
 def parse_message(update, context):
-    print("Kommt an.", update.message.chat_id)
     dictionary_switch = {
         update.message.text.lower(): chat,
         "hey wilson": start_chatbot,
