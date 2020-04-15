@@ -12,7 +12,7 @@ RUN rm $PHANTOM_JS.tar.bz2 && mv $PHANTOM_JS /usr/local/share
 RUN ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
 
 # Install Dependencies for T-Bot
-WORKDIR /project
+WORKDIR /app
 ADD . .
 RUN pip install -r requirements.txt
 
