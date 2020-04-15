@@ -3,10 +3,10 @@
 
 ## Description
 Telegram-Wilson is a [telegrambot](https://core.telegram.org/bots/api), with which you can chat in a natural way. This chatbot is powered by [cleverbot](https://www.cleverbot.com/), a well-known chatbot that learns to imitate human conversations by communicating with people.
-
 In this open source repository you can find the source code and instructions how to host this telegrambot on your own.
-
-
+___
+#### Click [here](https://t.me/cleverwilson_bot) to chat with Wilson.
+___
 ## Configuration
 In the configuration file 'phrases.json' you can define how your botinstance should respond.
 
