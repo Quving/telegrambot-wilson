@@ -1,7 +1,7 @@
 ---
 kind: pipeline
 type: docker
-name: server
+name: pipeline
 steps:
 - name: publish image
   image: plugins/docker
