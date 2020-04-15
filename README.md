@@ -6,8 +6,18 @@ Telegram-Wilson is a [telegrambot](https://core.telegram.org/bots/api), with whi
 
 In this open source repository you can find the source code and instructions how to host this telegrambot on your own.
 
-## Concept of Wilson
-This Telegrambot creates a client with the famous chatter bot [cleverbot](http://www.cleverbot.com/) using a virtualframe buffered browser. Messages to the bot will be forwarded to the cleverbot client. The responses will be parsed and returned to the telegrambot. Simple, isn't it?
+
+## Configuration
+In the configuration file 'phrases.json' you can define how your botinstance should respond.
+
+```json
+{
+  "INTRODUCTION": "Hi, I'm Wilson. Usually I'm only avail...",
+  "GREETING": "Yep?",
+  "GOODBYE": "Too bad ... see you next time.",
+  "HELP": "If you write with me and I don't answer, then ..."
+}
+```
 
 ## Installation
 Before you can host this instance on your own, you must officially register your bot with Telegrambot. You can find the instructions [here](https://core.telegram.org/bots) (3. How do i create a bot?)
@@ -18,7 +28,9 @@ After you had the conversation with Botfather, you received a bot_token. This bo
 #### Build and use your own Docker-Image
 ```bash
 docker build -t telegrambot-wilson .
-docker run -d -e BOT_TOKEN=$(BOT_TOKEN) --name telegrambot-wilson telegrambot-wilson
+docker run -d -v $(pwd)/phrases.json:/app/phrases.json \
+    -e BOT_TOKEN=<your-bot-token> \
+    --name telegrambot-wilson telegrambot-wilson
 ```
 
 ## Usage
