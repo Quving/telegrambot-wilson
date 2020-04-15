@@ -6,55 +6,50 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from chatbotinstance import ChatbotInstance
 from config import Config
 
-updater = Updater(token=Config.BOT_TOKEN)
-dispatcher = updater.dispatcher
 
-sessions = {}
-
-# Phrases
-HELP = Config.PHRASES['HELP']
-GOODBYE = Config.PHRASES['GOODBYE']
-GREETING = Config.PHRASES['GREETING']
-INTRODUCTION = Config.PHRASES['INTRODUCTION']
+def start(update, context):
+    update.message.reply_text(INTRODUCTION)
 
 
-def start(bot, update):
-    bot.sendMessage(update.message.chat_id, INTRODUCTION)
-
-
-def reset_chatbot_instance(bot, update):
+def reset_chatbot_instance(update, context):
     if str(update.message.chat_id) in sessions.keys():
-        bot.sendMessage(update.message.chat_id, "(Wilson dieded)")
+        update.message.reply_text("(Wilson dieded)")
         sessions[str(update.message.chat_id)].reset()
-        bot.sendMessage(update.message.chat_id, "(Wilson respawned")
-        bot.sendMessage(update.message.chat_id, "... warum?")
+        update.message.reply_text("(Wilson respawned")
+        update.message.reply_text("... warum?")
 
 
-def kill_chatbot_instance(bot, update):
+def kill_chatbot_instance(update, context):
     sessions[str(update.message.chat_id)].kill()
     sessions.pop(str(update.message.chat_id))
-    bot.sendMessage(update.message.chat_id, GOODBYE)
+    update.message.reply_text(GOODBYE)
 
 
-def start_chatbot(bot, update):
+def start_chatbot(update, context):
     newUser = {str(update.message.chat_id): ChatbotInstance()}
     sessions.update(newUser)
-    bot.sendMessage(update.message.chat_id, GREETING)
+    update.message.reply_text(GREETING)
 
 
-def chat(bot, update):
+def chat(update, context):
     if (str(update.message.chat_id) in sessions.keys() and
             sessions[str(update.message.chat_id)].is_ready()):
         reply = sessions[
             str(update.message.chat_id)].chat(update.message.text)
-        bot.sendMessage(update.message.chat_id, reply)
+        update.message.reply_text(reply)
 
 
-def help(bot, update):
-    bot.sendMessage(update.message.chat_id, HELP)
+def help(update, context):
+    update.message.reply_text(HELP)
 
 
-def parse_message(bot, update):
+def error(update, context):
+    """Log Errors caused by Updates."""
+    Config.logger.warning('Update "%s" caused error "%s"', update, context.error)
+
+
+def parse_message(update, context):
+    print("Kommt an.", update.message.chat_id)
     dictionary_switch = {
         update.message.text.lower(): chat,
         "hey wilson": start_chatbot,
@@ -62,20 +57,34 @@ def parse_message(bot, update):
         "stirb wilson": reset_chatbot_instance
     }
 
-    dictionary_switch[update.message.text.lower()](bot, update)
+    dictionary_switch[update.message.text.lower()](update, context)
 
 
-# Create Handlers.
-help_handler = CommandHandler("help", help)
-start_handler = CommandHandler("start", start)
-reset_handler = CommandHandler("reset", reset_chatbot_instance)
-msg_handler = MessageHandler([Filters.text], parse_message)
+if __name__ == '__main__':
+    sessions = {}
 
-# "Add Listeners"
-dispatcher.add_handler(help_handler)
-dispatcher.add_handler(reset_handler)
-dispatcher.add_handler(start_handler)
-dispatcher.add_handler(msg_handler)
+    # Phrases
+    HELP = Config.PHRASES['HELP']
+    GOODBYE = Config.PHRASES['GOODBYE']
+    GREETING = Config.PHRASES['GREETING']
+    INTRODUCTION = Config.PHRASES['INTRODUCTION']
 
-# Start polling
-updater.start_polling()
+    updater = Updater(token=Config.BOT_TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
+
+    # Create Handlers.
+    help_handler = CommandHandler("help", help)
+    start_handler = CommandHandler("start", start)
+    reset_handler = CommandHandler("reset", reset_chatbot_instance)
+    msg_handler = MessageHandler(Filters.text, parse_message)
+
+    # "Add Listeners"
+    dispatcher.add_error_handler(error)
+    dispatcher.add_handler(help_handler)
+    dispatcher.add_handler(reset_handler)
+    dispatcher.add_handler(start_handler)
+    dispatcher.add_handler(msg_handler)
+
+    # Start polling
+    updater.start_polling()
+    updater.idle()

@@ -4,9 +4,10 @@ import os
 
 
 class Config:
-    # Configure logging module
-    logging.basicConfig(level=logging.DEBUG, format='%(asctime)s' +
-                                                    '- %(name)s - %(levelname)s - %(message)s')
+    # Enable logging
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                        level=logging.DEBUG)
+
     logger = logging.getLogger(__name__)
 
     # Bot specific settings.
