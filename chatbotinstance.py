@@ -25,7 +25,7 @@ class ChatbotInstance():
         if self.driver is None:
             self.driver = webdriver.PhantomJS()
             self.driver.set_window_size(1280, 720)
-            self.driver.get("http://cleverbot.com")
+            self.driver.get("https://www.cleverbot.com")
             self.driver.implicitly_wait(10)
             return True
         else:
