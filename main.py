@@ -3,7 +3,7 @@
 import random
 import time
 
-from telegram import ChatAction
+import telegram
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from chatbotinstance import ChatbotInstance
