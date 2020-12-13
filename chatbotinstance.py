@@ -5,6 +5,7 @@ import time
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.firefox.options import Options
 
 
 class ChatbotInstance():
@@ -23,10 +24,16 @@ class ChatbotInstance():
         Launch a new chatbot instance.
         """
         if self.driver is None:
-            self.driver = webdriver.PhantomJS()
+            options = Options()
+            options.headless = True
+            self.driver = webdriver.Firefox(firefox_options=options, executable_path='./geckodriver')
             self.driver.set_window_size(1280, 720)
             self.driver.get("https://www.cleverbot.com")
             self.driver.implicitly_wait(10)
+            print("Click on button")
+            elem = self.driver.find_element_by_css_selector("input[value='understood, and agreed']")
+            elem.click()
+            print("Clicked")
             return True
         else:
             return False

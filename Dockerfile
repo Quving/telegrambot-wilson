@@ -1,19 +1,22 @@
-FROM python:3.6
+FROM ubuntu:20.04
 
 LABEL maintainer="vinh-ngu@hotmail.com"
 
-ENV PHANTOM_JS "phantomjs-2.1.1-linux-x86_64"
-ENV OPENSSL_CONF "/etc/ssl/"
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update && apt install python3 python3-pip wget firefox -y
 
-# Install PhantomJS
-RUN wget "https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2"
-RUN tar xvjf $PHANTOM_JS.tar.bz2
-RUN rm $PHANTOM_JS.tar.bz2 && mv $PHANTOM_JS /usr/local/share
-RUN ln -sf /usr/local/share/$PHANTOM_JS/bin/phantomjs /usr/local/bin
+WORKDIR /app
+
+# Install Firefox
+RUN wget "https://github.com/mozilla/geckodriver/releases/download/v0.28.0/geckodriver-v0.28.0-linux64.tar.gz" -O geckodriver.tar.gz
+RUN tar xvfz geckodriver.tar.gz
+# RUN wget "https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=de" -O firefox.tar.bz2
+# RUN tar xvf firefox.tar.bz2
+# RUN ln -s /app/firefox/firefox /usr/bin/firefox
+
 
 # Install Dependencies for T-Bot
-WORKDIR /app
 ADD . .
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-CMD ["python", "main.py"]
+CMD ["python3", "main.py"]
