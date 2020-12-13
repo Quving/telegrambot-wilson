@@ -29,7 +29,7 @@ After you had the conversation with Botfather, you received a bot_token. This bo
 ```bash
 docker build -t telegrambot-wilson .
 docker run -d -v $(pwd)/phrases.json:/app/phrases.json \
-    -e BOT_TOKEN=<your-bot-token> \
+    -e WILSON_BOT_TOKEN=<your-bot-token> \
     --name telegrambot-wilson telegrambot-wilson
 ```
 
